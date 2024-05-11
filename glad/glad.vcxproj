@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{db7d21bf-eef8-4eff-b333-d929d5acf971}</ProjectGuid>
-    <RootNamespace>Nugget</RootNamespace>
+    <ProjectGuid>{d82f87c3-ff2d-4472-b092-8a675e3122fd}</ProjectGuid>
+    <RootNamespace>glad</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -40,13 +40,13 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -102,12 +102,9 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);NUGGET_LIB;NUGGET_MS_COMPILER;NUGGET_DEBUG=2;NUGGET_GLFW_WINDOW;NUGGET_GLFW_WINDOW;NUGGET_GLFW_WINDOW;NUGGET_OPENGL</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)Nugget\src;$(SolutionDir)glfw\include;$(SolutionDir)glad\include;$(SolutionDir)stbi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)glad/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -120,12 +117,9 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);NUGGET_LIB;NUGGET_MS_COMPILER;NUGGET_MS_COMPILER;NUGGET_GLFW_WINDOW;NUGGET_GLFW_WINDOW;NUGGET_GLFW_WINDOW;NUGGET_OPENGL</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)Nugget\src;$(SolutionDir)glfw\include;$(SolutionDir)glad\include;$(SolutionDir)stbi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)glad/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -135,40 +129,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Image.h" />
-    <ClInclude Include="ImageImplement.h" />
-    <ClInclude Include="include\Nugget.h" />
-    <ClInclude Include="src\codeGLFW\WindowGLFW.h" />
-    <ClInclude Include="src\codeOpenGL\ImageOpenGL.h" />
-    <ClInclude Include="src\NuggetApplication.h" />
-    <ClInclude Include="src\NuggetWindow.h" />
-    <ClInclude Include="src\pch.h" />
-    <ClInclude Include="src\Shader.h" />
-    <ClInclude Include="src\Utility.h" />
-    <ClInclude Include="src\WindowImpl.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="src\codeGLFW\WindowGLFW.cpp" />
-    <ClCompile Include="src\codeOpenGL\ImageOpenGL.cpp" />
-    <ClCompile Include="src\codeOpenGL\Shader.cpp" />
-    <ClCompile Include="src\Image.cpp" />
-    <ClCompile Include="src\NuggetApplication.cpp" />
-    <ClCompile Include="src\NuggetWindow.cpp" />
-    <ClCompile Include="src\Source.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\glad\glad.vcxproj">
-      <Project>{d82f87c3-ff2d-4472-b092-8a675e3122fd}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\glfw_build\src\glfw.vcxproj">
-      <Project>{4445a7f5-993e-3bf4-be62-b2e496e6d344}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\stbi\stbi.vcxproj">
-      <Project>{d8d399c1-4299-4c42-ad30-804c8fdbb98a}</Project>
-    </ProjectReference>
+    <ClCompile Include="src\glad.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
