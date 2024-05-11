@@ -140,10 +140,12 @@
     <ClInclude Include="include\Nugget.h" />
     <ClInclude Include="src\codeGLFW\WindowGLFW.h" />
     <ClInclude Include="src\codeOpenGL\ImageOpenGL.h" />
+    <ClInclude Include="src\codeOpenGL\ShaderOpenGL.h" />
     <ClInclude Include="src\NuggetApplication.h" />
     <ClInclude Include="src\NuggetWindow.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\Shader.h" />
+    <ClInclude Include="src\ShaderImplement.h" />
     <ClInclude Include="src\Utility.h" />
     <ClInclude Include="src\WindowImpl.h" />
   </ItemGroup>
@@ -151,6 +153,7 @@
     <ClCompile Include="src\codeGLFW\WindowGLFW.cpp" />
     <ClCompile Include="src\codeOpenGL\ImageOpenGL.cpp" />
     <ClCompile Include="src\codeOpenGL\Shader.cpp" />
+    <ClCompile Include="src\codeOpenGL\ShaderOpenGL.cpp" />
     <ClCompile Include="src\Image.cpp" />
     <ClCompile Include="src\NuggetApplication.cpp" />
     <ClCompile Include="src\NuggetWindow.cpp" />

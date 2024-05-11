@@ -6,7 +6,7 @@
 #include"GLFW/glfw3.h"
 #include"stb_image.h"
 #include"Image.h"
-
+#include"Shader.h"
 
 
 namespace Nugget {
@@ -72,70 +72,9 @@ namespace Nugget {
 
 		// Shaders //
 		
-		const char* vertexShaderSource = R"(
-			#version 330 core
-			layout (location = 0) in vec2 aPos;
-			layout (location = 1) in vec2 aTexCoord;
+		Shader sProg{ "C:\\Users\\xchen\\source\\repos\\S24_Xing_Chen\\Nugget\Assets\Shaders\\DefaultVertexShader.glsl",
+		"C:\\Users\\xchen\\source\\repos\\S24_Xing_Chen\\Nugget\\Assets\\Shaders\\DefaultFrahmentShader.glsl" };
 
-			out vec2 TexCoord;
-
-			void main()
-			{
-				gl_Position = vec4(aPos.x, aPos.y, 0, 1.0);
-				TexCoord = aTexCoord;
-			}
-			)";
-		
-		const char* fragmentShaderSource = R"(
-			#version 330 core
-			out vec4 FragColor;
-
-			in vec2 TexCoord;
-
-			uniform sampler2D myTex;
-
-			void main()
-			{
-				FragColor = texture(myTex, TexCoord);
-			}
-			)";
-
-		unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-		glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-		glCompileShader(vertexShader);
-		int success;
-		char infoLog[512];
-		glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-		if (!success)
-		{
-			glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-			NUGGET_ERROR("ERROR::SHADER::PROGRAM::COMPILATION_FAILED\n" << infoLog)
-		}
-
-		unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-		glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-		glCompileShader(fragmentShader);
-		glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-		if (!success)
-		{
-			glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-			NUGGET_ERROR("ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog)
-		}
-
-		unsigned int shaderProgram = glCreateProgram();
-		glAttachShader(shaderProgram, vertexShader);
-		glAttachShader(shaderProgram, fragmentShader);
-		glLinkProgram(shaderProgram);
-
-		// check for linking errors
-		glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-		if (!success)
-		{
-			glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-			NUGGET_ERROR("ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog)
-		}
-		glDeleteShader(vertexShader);
-		glDeleteShader(fragmentShader);
 
 		// Texture //
 
@@ -151,7 +90,7 @@ namespace Nugget {
 			glClear(GL_COLOR_BUFFER_BIT);
 
 			// draw first triangle
-			glUseProgram(shaderProgram);
+			sProg.Bind();
 			glBindVertexArray(VAO);
 			pic.Bind();
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
