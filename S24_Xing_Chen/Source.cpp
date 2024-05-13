@@ -10,7 +10,7 @@ class MyGame : public Nugget::NuggetApplication
 	}
 
 	virtual void OnUpdate() override {
-		std::cout << "window width " << Nugget::NuggetWindow::GetWindow()->GetWidth() << std::endl;
+		//std::cout << "window width " << Nugget::NuggetWindow::GetWindow()->GetWidth() << std::endl;
 	}
 
 private:

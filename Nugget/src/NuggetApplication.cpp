@@ -72,8 +72,8 @@ namespace Nugget {
 
 		// Shaders //
 		
-		Shader sProg{ "C:\\Users\\xchen\\source\\repos\\S24_Xing_Chen\\Nugget\Assets\Shaders\\DefaultVertexShader.glsl",
-		"C:\\Users\\xchen\\source\\repos\\S24_Xing_Chen\\Nugget\\Assets\\Shaders\\DefaultFrahmentShader.glsl" };
+		Shader sProg{ "C:\\Users\\xchen\\source\\repos\\S24_Xing_Chen\\Nugget\\Assets\\Shaders\\DefaultVertexShader.glsl",
+		"C:\\Users\\xchen\\source\\repos\\S24_Xing_Chen\\Nugget\\Assets\\Shaders\\DefaultFragmentShader.glsl" };
 
 
 		// Texture //
