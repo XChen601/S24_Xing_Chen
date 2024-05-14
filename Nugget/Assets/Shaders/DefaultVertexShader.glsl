@@ -3,6 +3,7 @@
 			layout (location = 1) in vec2 aTexCoord;
 
 			out vec2 TexCoord;
+			unifrom vec2i ScreenSize;
 
 			void main()
 			{
