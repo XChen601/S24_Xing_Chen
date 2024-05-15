@@ -16,7 +16,6 @@ namespace Nugget
 		virtual void ClearScreen() override;
 
 	private:
-		Shader mDefaultShader{ "../Assets/Shaders/defaultVertexShader.glsl", 
-			"../Assets/Shaders/defaultFragmentShader.glsl" };
+		std::unique_ptr<Shader> mShaderPtr;
 	};
 }

@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Renderer.h"
+#include"codeOpenGL/RendererOpenGL.h"
 
 namespace Nugget
 {
@@ -27,6 +28,15 @@ namespace Nugget
 	void Renderer::ClearScreen()
 	{
 		mInstance->mImplementation->ClearScreen();
+	}
+
+	Renderer::Renderer()
+	{
+#ifdef NUGGET_OPENGL
+		mImplementation = std::unique_ptr<RendererImplement>{ new RendererOpenGL };
+#else
+		#only_openGL_is_supported_so_far
+#endif
 	}
 
 }

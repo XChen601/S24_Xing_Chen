@@ -22,7 +22,7 @@ namespace Nugget
 		if (!success)
 		{
 			glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-			NUGGET_ERROR("ERROR::SHADER::PROGRAM::COMPILATION_FAILED\n" << infoLog)
+			NUGGET_ERROR("ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog);
 		}
 
 		unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
@@ -32,7 +32,7 @@ namespace Nugget
 		if (!success)
 		{
 			glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-			NUGGET_ERROR("ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog)
+			NUGGET_ERROR("ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog);
 		}
 
 		mShaderProg = glCreateProgram();
@@ -45,7 +45,7 @@ namespace Nugget
 		if (!success)
 		{
 			glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-			NUGGET_ERROR("ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog)
+			NUGGET_ERROR("ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog);
 		}
 		glDeleteShader(vertexShader);
 		glDeleteShader(fragmentShader);
@@ -69,7 +69,7 @@ namespace Nugget
 		if (!success)
 		{
 			glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-			NUGGET_ERROR("ERROR::SHADER::PROGRAM::COMPILATION_FAILED\n" << infoLog)
+			NUGGET_ERROR("ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog);
 		}
 
 		unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
@@ -79,7 +79,7 @@ namespace Nugget
 		if (!success)
 		{
 			glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-			NUGGET_ERROR("ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog)
+			NUGGET_ERROR("ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog);
 		}
 
 		mShaderProg = glCreateProgram();
@@ -92,7 +92,7 @@ namespace Nugget
 		if (!success)
 		{
 			glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-			NUGGET_ERROR("ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog)
+			NUGGET_ERROR("ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog);
 		}
 		glDeleteShader(vertexShader);
 		glDeleteShader(fragmentShader);

@@ -1,6 +1,5 @@
 #pragma once
 
-#include"codeOpenGL/RendererOpenGL.h"
 #include"Image.h"
 #include"Shader.h"
 
@@ -14,8 +13,5 @@ namespace Nugget
 		virtual void ClearScreen() = 0;
 
 		virtual ~RendererImplement() {};
-
-	private:
-
 	};
 }

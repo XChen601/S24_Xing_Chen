@@ -17,6 +17,9 @@ namespace Nugget
 			return;
 		}
 
+		mShaderPtr = std::unique_ptr<Shader>{ new Shader{ "../Nugget/Assets/Shaders/defaultVertexShader.glsl",
+			"../Nugget/Assets/Shaders/defaultFragmentShader.glsl" } };
+
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}
@@ -60,8 +63,8 @@ namespace Nugget
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-		mDefaultShader.Bind();
-		mDefaultShader.SetUniform2Ints("ScreenSize", NuggetWindow::GetWindow()->GetWidth(), NuggetWindow::GetWindow()->GetHeight());
+		mShaderPtr->Bind();
+		mShaderPtr->SetUniform2Ints("ScreenSize", NuggetWindow::GetWindow()->GetWidth(), NuggetWindow::GetWindow()->GetHeight());
 		glBindVertexArray(VAO);
 		pic.Bind();
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

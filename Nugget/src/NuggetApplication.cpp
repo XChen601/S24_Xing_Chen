@@ -25,12 +25,10 @@ namespace Nugget {
 	}
 	void NuggetApplication::Run()
 	{
-		Renderer::Init();
-
 		NuggetWindow::Init();
 		NuggetWindow::GetWindow()->Create(1000, 800);
 		
-		
+		Renderer::Init();
 
 		// Shaders //
 		
@@ -44,13 +42,21 @@ namespace Nugget {
 
 		Initialize();
 
+		mNextFrameTime = std::chrono::steady_clock::now() + mFrameDuration;
+
+		int x{ 50 };
+
 		while (true) 
 		{
+			Renderer::ClearScreen();
 			OnUpdate();
 
-			Renderer::ClearScreen();
+			Renderer::Draw(pic, x, 100);
 
-			Renderer::Draw(pic, 200, 100);
+			x += 2;
+
+			std::this_thread::sleep_until(mNextFrameTime);
+			mNextFrameTime = std::chrono::steady_clock::now() + mFrameDuration;
 
 			NuggetWindow::GetWindow()->SwapBuffers();
 			NuggetWindow::GetWindow()->PollEvents();
