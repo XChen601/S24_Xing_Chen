@@ -8,19 +8,20 @@ class MyGame : public Nugget::NuggetApplication
 	virtual void Initialize() override
 	{
 		SetKeyPressedCallback([this](const Nugget::KeyPressed& e) { OnKeyPress(e); });
-		mEnemySpeed = 2;
+		mEnemySpeed = 4;
 		mBulletSpeed = 15;
 		mFireRate = 15;
 		mGameRows = 5;
 		mCurrentRow = 2;
 		mFrameCount = 0;
-		mEnemySpawnRate = 130;
+		mEnemySpawnRate = 30;
 		std::srand(static_cast<unsigned int>(std::time(0)));
 	}
 
 	virtual void OnUpdate() override {
 		//std::cout << "window width " << Nugget::NuggetWindow::GetWindow()->GetWidth() << std::endl;
 		Nugget::Renderer::Draw(mBackground, 0, 0);
+		CheckCollision();
 		UpdatePositions();
 		GenerateEnemy();
 		ShootBullet();
@@ -78,11 +79,32 @@ class MyGame : public Nugget::NuggetApplication
 
 		// remove bullets when they reach end of background x coord
 		mBulletUnits.erase(std::remove_if(mBulletUnits.begin(), mBulletUnits.end(),
-			[](const auto& bullet) { return bullet.GetXCoord() <= 0; }), mBulletUnits.end());
+			[&](const auto& bullet) { return bullet.GetXCoord() >= mBackground.GetWidth(); }), mBulletUnits.end());
 	}
 
-	void CheckCollision(std::vector<Nugget::Unit>& enemyUnits, std::vector<Nugget::Unit>& bulletUnits) {
+	void CheckCollision() {
+		for (auto enemyIt = mEnemyUnits.begin(); enemyIt != mEnemyUnits.end();) {
+			bool overlapFound = false;
 
+			for (auto bulletIt = mBulletUnits.begin(); bulletIt != mBulletUnits.end();) {
+				if (Nugget::UnitsOverlap(*enemyIt, *bulletIt)) {
+					std::cout << "overlap found";
+					// Remove bullet and enemy units
+					bulletIt = mBulletUnits.erase(bulletIt);
+					enemyIt = mEnemyUnits.erase(enemyIt);
+
+					overlapFound = true;
+					break;
+				}
+				else {
+					++bulletIt;
+				}
+			}
+
+			if (!overlapFound) {
+				++enemyIt;
+			}
+		}
 	}
 
 	void OnKeyPress(const Nugget::KeyPressed& e)
@@ -111,10 +133,6 @@ class MyGame : public Nugget::NuggetApplication
 		Nugget::Unit newEnemy{ mEnemyImage, mBackground.GetWidth(), rowCoord };
 		// error without using emplace_back and std::move - 'attempting to reference a deleted function'
 		mEnemyUnits.emplace_back(std::move(newEnemy)); 
-		
-
-
-		std::cout << "random row: " << randomRow << std::endl;
 	}
 
 	// generate a bullet starting from player position then goes to the end
@@ -125,9 +143,9 @@ class MyGame : public Nugget::NuggetApplication
 		}
 
 		int currRowCoord = GetRowYCoord(mCurrentRow);
-
-		// create a unit with bullet image starting at x = 80, y = currRowCoord
-		Nugget::Unit newBullet{ mBulletImage, 80, currRowCoord };
+		int halfRowHeight = mBackground.GetHeight() / (mGameRows * 2); // this makes the bullet center of row
+		// create a unit with bullet image starting at x = 80, y = currRowCoord + halfRowHeight
+		Nugget::Unit newBullet{ mBulletImage, 80, currRowCoord + halfRowHeight };
 		mBulletUnits.emplace_back(std::move(newBullet));
 	}
 	
