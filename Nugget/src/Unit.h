@@ -26,6 +26,8 @@ namespace Nugget
 		int mYPosition;
 
 		friend NUGGET_API bool UnitsOverlap(const Unit& a, const Unit& b);
+		friend class Renderer;
 	};
+
 	NUGGET_API bool UnitsOverlap(const Unit& a, const Unit& b);
 }

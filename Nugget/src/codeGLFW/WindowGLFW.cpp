@@ -15,7 +15,7 @@ namespace Nugget
 
 	void WindowGLFW::Create(int width, int height)
 	{
-		mWindow = glfwCreateWindow(width, height, "LearnOpenGL", NULL, NULL);
+		mWindow = glfwCreateWindow(width, height, "MyGame", NULL, NULL);
 		assert(mWindow != NULL);
 		glfwMakeContextCurrent(mWindow);
 

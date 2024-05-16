@@ -5,13 +5,30 @@ set(HEADER_FILES
 	src/NuggetWindow.h
 	src/WindowImpl.h
 	src/codeGLFW/WindowGLFW.h
-
+	src/Renderer.h
+	src/RendererImplement.h
+	src/codeOpenGL/RendererOpenGL.h
+	src/Shader.h
+	src/ShaderImplement.h
+	src/codeOpenGL/ShaderOpenGL.h
+	src/Image.h
+	src/ImageImplement.h
+	src/codeOpenGL/ImageOpenGL.h
+	src/NuggetEvents.h
+	src/NuggetKeys.h
+	src/Unit.h
 )
 
 set(SOURCE_FILES
 	src/NuggetApplication.cpp
 	src/NuggetWindow.cpp
 	src/codeGLFW/WindowGLFW.cpp
+	src/Renderer.cpp
+	src/codeOpenGL/RendererOpenGL.cpp
+	src/Shader.cpp
+	src/codeOpenGL/ImageOpenGL.cpp
+	src/NuggetEvents.cpp
+	src/Unit.cpp
 )
 
 
@@ -24,6 +41,7 @@ target_compile_definitions(Nugget
 	PRIVATE 
 		NUGGET_LIB
 		NUGGET_GLFW_WINDOW
+		NUGGET_OPENGL
 	
 )
 
@@ -33,7 +51,16 @@ endif()
 
 target_include_directories(Nugget PRIVATE ../glfw/include)
 target_include_directories(Nugget PRIVATE ../Nugget)
+target_include_directories(Nugget PRIVATE ../glad/include)
+target_include_directories(Nugget PRIVATE ../stbi)
 
 target_precompile_headers(Nugget PRIVATE src/pch.h)
 
 target_link_libraries(Nugget glfw)
+target_link_libraries(Nugget glad)
+target_link_libraries(Nugget stbi)
+
+
+file(COPY Assets DESTINATION ${PROJECT_BINARY_DIR}/Nugget)
+file(COPY Assets DESTINATION ${PROJECT_BINARY_DIR}/Debug/Nugget)
+file(COPY Assets DESTINATION ${PROJECT_BINARY_DIR}/Release/Nugget)

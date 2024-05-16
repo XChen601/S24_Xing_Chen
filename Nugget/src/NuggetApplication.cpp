@@ -13,52 +13,42 @@
 
 
 namespace Nugget {
+	NuggetApplication::NuggetApplication()
+	{
+		NuggetWindow::Init();
+		NuggetWindow::GetWindow()->Create(1000, 800);
+
+		Renderer::Init();
+
+		SetWindowCloseCallback([this]() {DefaultWindowCloseHandler(); });
+	}
+
 	void NuggetApplication::Initialize()
 	{
 
 	}
+
 	void NuggetApplication::OnUpdate()
 	{
 	}
 
 	void NuggetApplication::Shutdown()
 	{
+
 	}
+
 	void NuggetApplication::Run()
 	{
-		NuggetWindow::Init();
-		NuggetWindow::GetWindow()->Create(1000, 800);
-		
-		Renderer::Init();
-
-		// Shaders //
-		
-		Shader sProg{ "C:\\Users\\xchen\\source\\repos\\S24_Xing_Chen\\Nugget\\Assets\\Shaders\\DefaultVertexShader.glsl",
-		"C:\\Users\\xchen\\source\\repos\\S24_Xing_Chen\\Nugget\\Assets\\Shaders\\DefaultFragmentShader.glsl" };
-
-
-		// Texture //
-
-		Nugget::Image pic{ "C:\\Users\\xchen\\source\\repos\\S24_Xing_Chen\\Nugget\\Assets\\Textures\\Test.png" };
-
 		Initialize();
 
 		mNextFrameTime = std::chrono::steady_clock::now() + mFrameDuration;
 
-		int x{ 50 };
 
-		SetKeyPressedCallback([&x](const KeyPressed& event) {
-			if (event.GetKeyCode() == NUGGET_KEY_RIGHT)
-				x += 50;
-		});
-
-		while (true) 
+		while (mShouldContinue)
 		{
 			Renderer::ClearScreen();
+
 			OnUpdate();
-
-			Renderer::Draw(pic, x, 100);
-
 
 			std::this_thread::sleep_until(mNextFrameTime);
 			mNextFrameTime = std::chrono::steady_clock::now() + mFrameDuration;
@@ -87,6 +77,11 @@ namespace Nugget {
 	void NuggetApplication::SetWindowCloseCallback(std::function<void()> callbackFunc)
 	{
 		NuggetWindow::GetWindow()->SetWindowCloseCallback(callbackFunc);
+	}
+
+	void NuggetApplication::DefaultWindowCloseHandler()
+	{
+		mShouldContinue = false;
 	}
 
 }

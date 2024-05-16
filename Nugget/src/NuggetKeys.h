@@ -1,6 +1,6 @@
 #pragma once
 
-#ifdef NUGGET_GLFW_WINDOW
+// #ifdef NUGGET_GLFW_WINDOW
 	#define NUGGET_KEY_SPACE              32
 	#define NUGGET_KEY_APOSTROPHE         39  /* ' */
 	#define NUGGET_KEY_COMMA              44  /* , */
@@ -123,6 +123,6 @@
 	#define NUGGET_KEY_RIGHT_ALT          346
 	#define NUGGET_KEY_RIGHT_SUPER        347
 	#define NUGGET_KEY_MENU               348
-#else
-	#definition_NUGGET_GLFW_is_missing
-#endif
+// #else
+//	#definition_NUGGET_GLFW_is_missing
+// #endif
