@@ -23,7 +23,7 @@ class MyGame : public Nugget::NuggetApplication
 		Nugget::Renderer::Draw(mBackground, 0, 0);
 		updatePositions();
 		generateEnemy();
-		generateBullet();
+		shootBullet();
 		mFrameCount++;
 	}
 
@@ -94,7 +94,7 @@ class MyGame : public Nugget::NuggetApplication
 			return;
 		}
 
-		// randomly picks a row from 0 - mCurrentRow - 1 then generate a zombie
+		// randomly picks a row from 0 - mCurrentRow - 1 then generate an enemy
 		int randomRow = rand() % mGameRows;
 
 		int rowCoord = getRowCoord(randomRow);
@@ -107,7 +107,7 @@ class MyGame : public Nugget::NuggetApplication
 	}
 
 	// generate a bullet starting from player position then goes to the end
-	void generateBullet()
+	void shootBullet()
 	{
 		if (mFrameCount % mFireRate != 0) {
 			return;
