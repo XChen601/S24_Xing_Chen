@@ -21,14 +21,14 @@ class MyGame : public Nugget::NuggetApplication
 	virtual void OnUpdate() override {
 		//std::cout << "window width " << Nugget::NuggetWindow::GetWindow()->GetWidth() << std::endl;
 		Nugget::Renderer::Draw(mBackground, 0, 0);
-		updatePositions();
-		generateEnemy();
-		shootBullet();
+		UpdatePositions();
+		GenerateEnemy();
+		ShootBullet();
 		mFrameCount++;
 	}
 
 	// moves the player up or down
-	void movePlayerRow(bool moveUp)
+	void MovePlayerRow(bool moveUp)
 	{
 		if (moveUp) {
 			if (mCurrentRow >= mGameRows - 1) {
@@ -50,44 +50,53 @@ class MyGame : public Nugget::NuggetApplication
 	}
 
 	// updates all the positions
-	void updatePositions()
+	void UpdatePositions()
 	{
 		// update player position
-		int playerHeight = getRowCoord(mCurrentRow);
+		int playerHeight = GetRowYCoord(mCurrentRow);
 		Nugget::Renderer::Draw(mPlayerAvatar, 0, playerHeight);
 
 		// update enemies locations
-		for (auto& enemy : mEnemyLocations) {
-			Nugget::Renderer::Draw(mEnemyAvatar, enemy.x, enemy.y);
-			enemy.x -= enemy.speed;
+		for (auto& enemy : mEnemyUnits) {
+			Nugget::Image mEnemyAvatar{ mEnemyImage };
+			Nugget::Renderer::Draw(mEnemyAvatar, enemy.GetXCoord(), enemy.GetYCoord());
+			// move enemy left 
+			enemy.UpdateXCoord(-mEnemySpeed);
 		}
 
+		// end game if an enemy reaches 0 x coord
+		// TODO
+
+		
 		// update bullet locations
-		for (auto it = mBulletLocations.begin(); it != mBulletLocations.end();) {
-			Nugget::Renderer::Draw(mBullet, it->x, it->y);
-			it->x += it->speed;
-			// remove bullets if x > background width
-			if (it->x > mBackground.GetWidth()) {
-				it = mBulletLocations.erase(it); // erase returns the next iterator
-			}
-			else {
-				++it; // only increment if not erasing
-			}
+		for (auto& bullet : mBulletUnits) {
+			Nugget::Image mBulletAvatar{ mBulletImage };
+			Nugget::Renderer::Draw(mBulletAvatar, bullet.GetXCoord(), bullet.GetYCoord());
+			// move bullet right 
+			bullet.UpdateXCoord(mBulletSpeed);
 		}
+
+		// remove bullets when they reach end of background x coord
+		mBulletUnits.erase(std::remove_if(mBulletUnits.begin(), mBulletUnits.end(),
+			[](const auto& bullet) { return bullet.GetXCoord() <= 0; }), mBulletUnits.end());
+	}
+
+	void CheckCollision(std::vector<Nugget::Unit>& enemyUnits, std::vector<Nugget::Unit>& bulletUnits) {
+
 	}
 
 	void OnKeyPress(const Nugget::KeyPressed& e)
 	{
 		if(e.GetKeyCode() == NUGGET_KEY_UP || e.GetKeyCode() == NUGGET_KEY_W)
 		{
-			movePlayerRow(true);
+			MovePlayerRow(true);
 		}
 		else if (e.GetKeyCode() == NUGGET_KEY_DOWN || e.GetKeyCode() == NUGGET_KEY_S) {
-			movePlayerRow(false);
+			MovePlayerRow(false);
 		}
 	}
 
-	void generateEnemy()
+	void GenerateEnemy()
 	{	
 		// check if time to generate row
 		if (mFrameCount % mEnemySpawnRate != 0) {
@@ -97,29 +106,32 @@ class MyGame : public Nugget::NuggetApplication
 		// randomly picks a row from 0 - mCurrentRow - 1 then generate an enemy
 		int randomRow = rand() % mGameRows;
 
-		int rowCoord = getRowCoord(randomRow);
+		int rowCoord = GetRowYCoord(randomRow);
 		// add enemy location at end of randomRow
-		Enemy newEnemy;
-		mEnemyLocations.emplace_back(mBackground.GetWidth(), rowCoord, 1, mEnemySpeed);
+		Nugget::Unit newEnemy{ mEnemyImage, mBackground.GetWidth(), rowCoord };
+		// error without using emplace_back and std::move - 'attempting to reference a deleted function'
+		mEnemyUnits.emplace_back(std::move(newEnemy)); 
+		
 
 
 		std::cout << "random row: " << randomRow << std::endl;
 	}
 
 	// generate a bullet starting from player position then goes to the end
-	void shootBullet()
+	void ShootBullet()
 	{
 		if (mFrameCount % mFireRate != 0) {
 			return;
 		}
 
-		int currRowCoord = getRowCoord(mCurrentRow);
-		Bullet newBullet;
-		mBulletLocations.emplace_back(80, currRowCoord, mBulletSpeed);
-		
+		int currRowCoord = GetRowYCoord(mCurrentRow);
+
+		// create a unit with bullet image starting at x = 80, y = currRowCoord
+		Nugget::Unit newBullet{ mBulletImage, 80, currRowCoord };
+		mBulletUnits.emplace_back(std::move(newBullet));
 	}
 	
-	int getRowCoord(int row) {
+	int GetRowYCoord(int row) {
 		// calculates player pixel location: get background height, divide by total rows, get move amount * currRow
 		int moveAmount = mBackground.GetHeight() / mGameRows;
 		int yCoord = moveAmount * row;
@@ -131,8 +143,8 @@ class MyGame : public Nugget::NuggetApplication
 private:
 	Nugget::Image mBackground{ "../Assets/background.png" };
 	Nugget::Image mPlayerAvatar{ "../Assets/player_avatar_resized.png" };
-	Nugget::Image mEnemyAvatar{ "../Assets/zombie_avatar_resized.png" };
-	Nugget::Image mBullet{ "../Assets/bullet_resized.png" };
+	std::string mEnemyImage{ "../Assets/zombie_avatar_resized.png" };
+	std::string mBulletImage{ "../Assets/bullet_resized.png" };
 
 	int mEnemySpeed;
 	int mBulletSpeed;
@@ -141,20 +153,9 @@ private:
 	int mCurrentRow;
 	int mFrameCount;
 	int mEnemySpawnRate;
-	struct Enemy {
-		int x;
-		int y;
-		int hp;
-		int speed;
-	};
-	std::vector<Enemy> mEnemyLocations;
 
-	struct Bullet {
-		int x;
-		int y;
-		int speed;
-	};
-	std::vector<Bullet> mBulletLocations;
+	std::vector<Nugget::Unit> mEnemyUnits;
+	std::vector<Nugget::Unit> mBulletUnits;
 };
 
 START_GAME(MyGame)
