@@ -1,7 +1,8 @@
 #pragma once
 
-
 #include "Utility.h"
+#
+
 namespace Nugget
 {
 	class NUGGET_API KeyPressed
@@ -24,10 +25,5 @@ namespace Nugget
 
 	private:
 		int mKeyCode;
-	};
-
-	class NUGGET_API WindowClosed
-	{
-
 	};
 }

@@ -2,6 +2,8 @@
 
 #include"pch.h"
 #include "Utility.h"
+#include"NuggetEvents.h"
+
 
 constexpr int NUGGET_FRAME_RATE{ 60 };
 

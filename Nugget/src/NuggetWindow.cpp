@@ -56,4 +56,19 @@ namespace Nugget
 		return mWindow->GetHeight();
 	}
 
+	void NuggetWindow::SetKeyPressedCallback(std::function<void(const KeyPressed&)>& callbackFunc)
+	{
+		mWindow->SetKeyPressedCallback(callbackFunc);
+	}
+
+	void NuggetWindow::SetKeyReleasedCallback(std::function<void(const KeyReleased&)>& callbackFunc)
+	{
+		mWindow->SetKeyReleasedCallback(callbackFunc);
+	}
+
+	void NuggetWindow::SetWindowCloseCallback(std::function<void()> callbackFunc)
+	{
+		mWindow->SetWindowCloseCallback(callbackFunc);
+	}
+
 }

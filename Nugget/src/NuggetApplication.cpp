@@ -9,6 +9,7 @@
 #include"Renderer.h"
 #include"Image.h"
 #include"Shader.h"
+#include"NuggetKeys.h"
 
 
 namespace Nugget {
@@ -46,6 +47,11 @@ namespace Nugget {
 
 		int x{ 50 };
 
+		SetKeyPressedCallback([&x](const KeyPressed& event) {
+			if (event.GetKeyCode() == NUGGET_KEY_RIGHT)
+				x += 50;
+		});
+
 		while (true) 
 		{
 			Renderer::ClearScreen();
@@ -53,7 +59,6 @@ namespace Nugget {
 
 			Renderer::Draw(pic, x, 100);
 
-			x += 2;
 
 			std::this_thread::sleep_until(mNextFrameTime);
 			mNextFrameTime = std::chrono::steady_clock::now() + mFrameDuration;
@@ -68,4 +73,20 @@ namespace Nugget {
 		NuggetWindow::Shutdown();
 
 	}
+	
+	void NuggetApplication::SetKeyPressedCallback(std::function<void(const KeyPressed&)> callbackFunc)
+	{
+		NuggetWindow::GetWindow()->SetKeyPressedCallback(callbackFunc);
+	}
+
+	void NuggetApplication::SetKeyReleasedCallback(std::function<void(const KeyReleased&)> callbackFunc)
+	{
+		NuggetWindow::GetWindow()->SetKeyReleasedCallback(callbackFunc);
+	}
+
+	void NuggetApplication::SetWindowCloseCallback(std::function<void()> callbackFunc)
+	{
+		NuggetWindow::GetWindow()->SetWindowCloseCallback(callbackFunc);
+	}
+
 }
