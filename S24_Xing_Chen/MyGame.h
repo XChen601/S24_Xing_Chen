@@ -15,6 +15,7 @@ private:
     void UpdatePositions();
     void CheckCollision();
     void OnKeyPress(const Nugget::KeyPressed& e);
+    void ResetGame();
     void GenerateEnemy();
     void ShootBullet();
     int GetRowYCoord(int row);

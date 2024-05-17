@@ -25,8 +25,8 @@ void MyGame::OnUpdate() {
 	}
 	Nugget::Renderer::Draw(mBackground, 0, 0);
 	mScore->DisplayScore();
-	CheckCollision();
 	UpdatePositions();
+	CheckCollision();
 	GenerateEnemy();
 	ShootBullet();
 	UpdateSpeed();
@@ -140,9 +140,22 @@ void MyGame::OnKeyPress(const Nugget::KeyPressed& e)
 		MovePlayerRow(false);
 	}
 	else if (e.GetKeyCode() == NUGGET_KEY_SPACE && mGameEnd) {
-		mScore->SetScore(0);
-		mGameEnd = false;
+		ResetGame();
 	}
+}
+
+void MyGame::ResetGame()
+{
+	mScore->SetScore(0);
+	mGameEnd = false;
+	// reset all the speeds
+	mEnemySpeed = 4;
+	mBulletSpeed = 17;
+	mFireRate = 17;
+	mGameRows = 5;
+	mCurrentRow = 2;
+	mFrameCount = 0;
+	mEnemySpawnRate = 30;
 }
 
 void MyGame::GenerateEnemy()
@@ -187,5 +200,6 @@ void MyGame::EndGame() {
 	std::cout << "Game Over";
 	mEnemyUnits.clear();
 	mBulletUnits.clear();
+
 	mGameEnd = true;
 }
