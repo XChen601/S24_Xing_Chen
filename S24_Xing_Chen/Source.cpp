@@ -2,6 +2,7 @@
 #include <utility>
 
 #include "Nugget.h"
+#include "Score.h"
 
 class MyGame : public Nugget::NuggetApplication
 {
@@ -15,19 +16,24 @@ class MyGame : public Nugget::NuggetApplication
 		mCurrentRow = 2;
 		mFrameCount = 0;
 		mEnemySpawnRate = 30;
+		mGameEnd = false;
 		std::srand(static_cast<unsigned int>(std::time(0)));
+		mScore = new Score();
 	}
 
 	virtual void OnUpdate() override {
 		//std::cout << "window width " << Nugget::NuggetWindow::GetWindow()->GetWidth() << std::endl;
 		Nugget::Renderer::Draw(mBackground, 0, 0);
+		if (mGameEnd) return;
 		CheckCollision();
 		UpdatePositions();
 		GenerateEnemy();
 		ShootBullet();
+		mScore->DisplayScore();
 		mFrameCount++;
 	}
 
+	
 	// moves the player up or down
 	void MovePlayerRow(bool moveUp)
 	{
@@ -63,10 +69,11 @@ class MyGame : public Nugget::NuggetApplication
 			Nugget::Renderer::Draw(mEnemyAvatar, enemy.GetXCoord(), enemy.GetYCoord());
 			// move enemy left 
 			enemy.UpdateXCoord(-mEnemySpeed);
+			if (enemy.GetXCoord() < 0) {
+				EndGame();
+				break;
+			}
 		}
-
-		// end game if an enemy reaches 0 x coord
-		// TODO
 
 		
 		// update bullet locations
@@ -94,6 +101,8 @@ class MyGame : public Nugget::NuggetApplication
 					enemyIt = mEnemyUnits.erase(enemyIt);
 
 					overlapFound = true;
+
+					mScore->IncrementScore();
 					break;
 				}
 				else {
@@ -156,13 +165,20 @@ class MyGame : public Nugget::NuggetApplication
 		return yCoord;
 	}
 
-
+	void EndGame() {
+		std::cout << "Game Over";
+		mEnemyUnits.clear();
+		mBulletUnits.clear();
+		mGameEnd = true;
+		mBackground = Nugget::Image{ "../Assets/end_screen.png" };
+	}
 
 private:
 	Nugget::Image mBackground{ "../Assets/background.png" };
 	Nugget::Image mPlayerAvatar{ "../Assets/player_avatar_resized.png" };
 	std::string mEnemyImage{ "../Assets/zombie_avatar_resized.png" };
 	std::string mBulletImage{ "../Assets/bullet_resized.png" };
+	std::string mEndScreenImage{ "../Assets/end_screen.png" };
 
 	int mEnemySpeed;
 	int mBulletSpeed;
@@ -174,6 +190,10 @@ private:
 
 	std::vector<Nugget::Unit> mEnemyUnits;
 	std::vector<Nugget::Unit> mBulletUnits;
+
+	Score* mScore;
+	bool mGameEnd;
+	
 };
 
 START_GAME(MyGame)

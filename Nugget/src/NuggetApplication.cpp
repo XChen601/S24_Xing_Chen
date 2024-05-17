@@ -16,7 +16,7 @@ namespace Nugget {
 	NuggetApplication::NuggetApplication()
 	{
 		NuggetWindow::Init();
-		NuggetWindow::GetWindow()->Create(1222, 750);
+		NuggetWindow::GetWindow()->Create(800, 491);
 
 		Renderer::Init();
 
