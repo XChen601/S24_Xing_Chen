@@ -44,7 +44,7 @@ void MyGame::UpdateSpeed() {
 		if (mFireRate > 5)
 			mFireRate -= 1;
 
-		if (mEnemySpawnRate > 15)
+		if (mEnemySpawnRate > 12)
 			mEnemySpawnRate -= 2;
 		lastUpdatedScore = currScore;
 	}
@@ -90,7 +90,6 @@ void MyGame::UpdatePositions()
 			break;
 		}
 	}
-
 
 	// update bullet locations
 	for (auto& bullet : mBulletUnits) {
@@ -172,8 +171,8 @@ void MyGame::ShootBullet()
 
 	int currRowCoord = GetRowYCoord(mCurrentRow);
 	int halfRowHeight = mBackground.GetHeight() / (mGameRows * 2); // this makes the bullet center of row
-	// create a unit with bullet image starting at x = 80, y = currRowCoord + halfRowHeight
-	Nugget::Unit newBullet{ mBulletImage, 80, currRowCoord + halfRowHeight };
+	// create a unit with bullet image starting at x = player width, y = currRowCoord + halfRowHeight
+	Nugget::Unit newBullet{ mBulletImage, mPlayerAvatar.GetWidth(), currRowCoord + halfRowHeight};
 	mBulletUnits.emplace_back(std::move(newBullet));
 }
 
