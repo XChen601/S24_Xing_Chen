@@ -16,4 +16,4 @@ Move the player avatar up and down to shoot enemies spawning from the right. Onc
 The game progressively gets harder as the score increases. 
 
 ### Demo
-![game demo]()
+![game demo](https://github.com/XChen601/S24_Xing_Chen/blob/main/game_demo.gif)
