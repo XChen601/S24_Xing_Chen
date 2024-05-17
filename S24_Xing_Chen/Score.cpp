@@ -36,5 +36,5 @@ void Score::IncrementScore()
 
 int Score::GetScore() const
 {
-	return 0;
+	return mScore;
 }

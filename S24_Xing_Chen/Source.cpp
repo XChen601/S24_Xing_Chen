@@ -22,18 +22,35 @@ class MyGame : public Nugget::NuggetApplication
 	}
 
 	virtual void OnUpdate() override {
-		//std::cout << "window width " << Nugget::NuggetWindow::GetWindow()->GetWidth() << std::endl;
 		Nugget::Renderer::Draw(mBackground, 0, 0);
+		mScore->DisplayScore();
 		if (mGameEnd) return;
 		CheckCollision();
 		UpdatePositions();
 		GenerateEnemy();
 		ShootBullet();
-		mScore->DisplayScore();
+		UpdateSpeed();
 		mFrameCount++;
 	}
 
-	
+	void UpdateSpeed() {
+		// every 5 score, shoot faster, enemy faster
+		int currScore = mScore->GetScore();
+
+		if (currScore % 5 == 0 && currScore != lastUpdatedScore) {
+			std::cout << "update speed";
+			mEnemySpeed += 1;
+			mBulletSpeed += 1;
+			if (mFireRate > 5)
+				mFireRate -= 1;
+		
+			if (mEnemySpawnRate > 15)
+				mEnemySpawnRate -= 2;
+			lastUpdatedScore = currScore;
+		}
+	}
+
+
 	// moves the player up or down
 	void MovePlayerRow(bool moveUp)
 	{
@@ -44,7 +61,6 @@ class MyGame : public Nugget::NuggetApplication
 			else {
 				mCurrentRow += 1;
 			}
-			std::cout << mCurrentRow;
 		}
 		else {
 			if (mCurrentRow == 0) {
@@ -95,7 +111,6 @@ class MyGame : public Nugget::NuggetApplication
 
 			for (auto bulletIt = mBulletUnits.begin(); bulletIt != mBulletUnits.end();) {
 				if (Nugget::UnitsOverlap(*enemyIt, *bulletIt)) {
-					std::cout << "overlap found";
 					// Remove bullet and enemy units
 					bulletIt = mBulletUnits.erase(bulletIt);
 					enemyIt = mEnemyUnits.erase(enemyIt);
@@ -192,6 +207,7 @@ private:
 	std::vector<Nugget::Unit> mBulletUnits;
 
 	Score* mScore;
+	int lastUpdatedScore = 0; // so it does update infinite times when score is used to update speed
 	bool mGameEnd;
 	
 };
