@@ -13,6 +13,8 @@ public:
 
 	int GetScore() const;
 
+	void SetScore(int score);
+
 private:
 	int mScore = 0;
 	Nugget::Image mBackground{ "../Assets/background.png"};

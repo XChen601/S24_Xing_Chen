@@ -135,6 +135,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="MyGame.cpp" />
     <ClCompile Include="Score.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>

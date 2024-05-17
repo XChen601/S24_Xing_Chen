@@ -38,3 +38,8 @@ int Score::GetScore() const
 {
 	return mScore;
 }
+
+void Score::SetScore(int score)
+{
+	mScore = score;
+}
