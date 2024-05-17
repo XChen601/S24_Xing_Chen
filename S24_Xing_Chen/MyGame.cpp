@@ -3,23 +3,28 @@
 
 void MyGame::Initialize()
 {
+	std::srand(static_cast<unsigned int>(std::time(0))); // random seed using time
 	SetKeyPressedCallback([this](const Nugget::KeyPressed& e) { OnKeyPress(e); });
 	mEnemySpeed = 4;
-	mBulletSpeed = 15;
-	mFireRate = 15;
+	mBulletSpeed = 17;
+	mFireRate = 17;
 	mGameRows = 5;
 	mCurrentRow = 2;
 	mFrameCount = 0;
 	mEnemySpawnRate = 30;
 	mGameEnd = false;
-	std::srand(static_cast<unsigned int>(std::time(0)));
+
 	mScore = new Score();
 }
 
 void MyGame::OnUpdate() {
+	if (mGameEnd) {
+		Nugget::Renderer::Draw(mEndScreenImage, 0, 0);
+		mScore->DisplayScore();
+		return;
+	}
 	Nugget::Renderer::Draw(mBackground, 0, 0);
 	mScore->DisplayScore();
-	if (mGameEnd) return;
 	CheckCollision();
 	UpdatePositions();
 	GenerateEnemy();
@@ -135,6 +140,10 @@ void MyGame::OnKeyPress(const Nugget::KeyPressed& e)
 	else if (e.GetKeyCode() == NUGGET_KEY_DOWN || e.GetKeyCode() == NUGGET_KEY_S) {
 		MovePlayerRow(false);
 	}
+	else if (e.GetKeyCode() == NUGGET_KEY_SPACE && mGameEnd) {
+		mScore->SetScore(0);
+		mGameEnd = false;
+	}
 }
 
 void MyGame::GenerateEnemy()
@@ -180,5 +189,4 @@ void MyGame::EndGame() {
 	mEnemyUnits.clear();
 	mBulletUnits.clear();
 	mGameEnd = true;
-	mBackground = Nugget::Image{ "../Assets/end_screen.png" };
 }

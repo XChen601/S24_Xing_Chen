@@ -24,7 +24,7 @@ private:
     Nugget::Image mPlayerAvatar{ "../Assets/player_avatar_resized.png" };
     std::string mEnemyImage{ "../Assets/zombie_avatar_resized.png" };
     std::string mBulletImage{ "../Assets/bullet_resized.png" };
-    std::string mEndScreenImage{ "../Assets/end_screen.png" };
+    Nugget::Image mEndScreenImage{ "../Assets/end_screen.png" };
 
     int mEnemySpeed;
     int mBulletSpeed;
