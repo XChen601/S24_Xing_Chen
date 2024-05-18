@@ -12,6 +12,7 @@ void MyGame::Initialize()
 	mCurrentRow = 2;
 	mFrameCount = 0;
 	mEnemySpawnRate = 30;
+	mNextSpawnFrame = 0;
 	mGameEnd = false;
 
 	mScore = new Score();
@@ -161,7 +162,7 @@ void MyGame::ResetGame()
 void MyGame::GenerateEnemy()
 {
 	// check if time to generate row
-	if (mFrameCount % mEnemySpawnRate != 0) {
+	if (mFrameCount != mNextSpawnFrame) {
 		return;
 	}
 
@@ -173,6 +174,10 @@ void MyGame::GenerateEnemy()
 	Nugget::Unit newEnemy{ mEnemyImage, mBackground.GetWidth(), rowCoord };
 	// error without using emplace_back and std::move - 'attempting to reference a deleted function'
 	mEnemyUnits.emplace_back(std::move(newEnemy));
+
+	// makes generating enemies more random
+	int random_offset = rand() % mEnemySpawnRate - mEnemySpawnRate/2;
+	mNextSpawnFrame = mNextSpawnFrame + mEnemySpawnRate + random_offset;
 }
 
 // generate a bullet starting from player position then goes to the end

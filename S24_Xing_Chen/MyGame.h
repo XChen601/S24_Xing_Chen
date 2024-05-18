@@ -34,6 +34,7 @@ private:
     int mCurrentRow;
     int mFrameCount;
     int mEnemySpawnRate;
+    int mNextSpawnFrame;
 
     std::vector<Nugget::Unit> mEnemyUnits;
     std::vector<Nugget::Unit> mBulletUnits;
@@ -41,4 +42,5 @@ private:
     Score* mScore;
     int lastUpdatedScore = 0;
     bool mGameEnd;
+    
 };
