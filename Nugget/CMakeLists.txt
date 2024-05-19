@@ -26,6 +26,8 @@ set(SOURCE_FILES
 	src/Renderer.cpp
 	src/codeOpenGL/RendererOpenGL.cpp
 	src/Shader.cpp
+	src/codeOpenGL/ShaderOpenGL.cpp
+	src/Image.cpp
 	src/codeOpenGL/ImageOpenGL.cpp
 	src/NuggetEvents.cpp
 	src/Unit.cpp
@@ -42,7 +44,6 @@ target_compile_definitions(Nugget
 		NUGGET_LIB
 		NUGGET_GLFW_WINDOW
 		NUGGET_OPENGL
-	
 )
 
 if(MSVC)
@@ -50,7 +51,7 @@ if(MSVC)
 endif()
 
 target_include_directories(Nugget PRIVATE ../glfw/include)
-target_include_directories(Nugget PRIVATE ../Nugget)
+target_include_directories(Nugget PRIVATE ../Nugget/src)
 target_include_directories(Nugget PRIVATE ../glad/include)
 target_include_directories(Nugget PRIVATE ../stbi)
 
