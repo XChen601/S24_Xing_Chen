@@ -159,7 +159,6 @@
     <ClCompile Include="src\codeGLFW\WindowGLFW.cpp" />
     <ClCompile Include="src\codeOpenGL\ImageOpenGL.cpp" />
     <ClCompile Include="src\codeOpenGL\RendererOpenGL.cpp" />
-    <ClCompile Include="src\codeOpenGL\Shader.cpp" />
     <ClCompile Include="src\codeOpenGL\ShaderOpenGL.cpp" />
     <ClCompile Include="src\Image.cpp" />
     <ClCompile Include="src\NuggetApplication.cpp" />
@@ -182,9 +181,6 @@
     <ProjectReference Include="..\stbi\stbi.vcxproj">
       <Project>{d8d399c1-4299-4c42-ad30-804c8fdbb98a}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="cpp.hint" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
