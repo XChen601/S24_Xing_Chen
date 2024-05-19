@@ -37,7 +37,7 @@ namespace Nugget
 
 	ImageOpenGL::ImageOpenGL(std::string&& filePath)
 	{
-		std::cout << "test";
+
 		glGenTextures(1, &mTexture);
 		glBindTexture(GL_TEXTURE_2D, mTexture);
 
@@ -48,7 +48,7 @@ namespace Nugget
 
 		int nrChannels;
 		stbi_set_flip_vertically_on_load(true);
-		std::cout << "filepath:" << filePath.c_str() << std::endl << "width: " << &mWidth << std::endl;
+		
 		unsigned char* data = stbi_load(filePath.c_str(), &mWidth, &mHeight, &nrChannels, 0);
 
 		if (data)

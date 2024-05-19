@@ -14,7 +14,6 @@ add_subdirectory(stbi)
 add_subdirectory(Nugget)
 add_subdirectory(S24_Xing_Chen)
 
-
 set_property(DIRECTORY PROPERTY VS_STARTUP_PROJECT Game)
 
 file(COPY Assets DESTINATION ${PROJECT_BINARY_DIR})
