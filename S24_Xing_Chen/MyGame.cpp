@@ -14,6 +14,7 @@ void MyGame::Initialize()
 	mEnemySpawnRate = 30;
 	mNextSpawnFrame = 0;
 	mGameEnd = false;
+	mLastFireFrame = 0;
 
 	mScore = new Score();
 }
@@ -30,7 +31,6 @@ void MyGame::OnUpdate() {
 	UpdatePositions();
 	CheckCollision();
 	GenerateEnemy();
-	ShootBullet();
 	UpdateSpeed();
 	mFrameCount++;
 }
@@ -144,6 +144,9 @@ void MyGame::OnKeyPress(const Nugget::KeyPressed& e)
 	else if (e.GetKeyCode() == NUGGET_KEY_SPACE && mGameEnd) {
 		ResetGame();
 	}
+	else if (e.GetKeyCode() == NUGGET_KEY_SPACE && !mGameEnd) {
+		ShootBullet();
+	}
 }
 
 void MyGame::ResetGame()
@@ -159,6 +162,7 @@ void MyGame::ResetGame()
 	mFrameCount = 0;
 	mEnemySpawnRate = 30;
 	mNextSpawnFrame = 0;
+	mLastFireFrame = 0;
 }
 
 void MyGame::GenerateEnemy()
@@ -185,15 +189,16 @@ void MyGame::GenerateEnemy()
 // generate a bullet starting from player position then goes to the end
 void MyGame::ShootBullet()
 {
-	if (mFrameCount % mFireRate != 0) {
-		return;
+	if ((mFrameCount - mLastFireFrame) < mFireRate) {
+		return; // not enough frames have passed since the last shot
 	}
-
 	int currRowCoord = GetRowYCoord(mCurrentRow);
 	int halfRowHeight = mBackground.GetHeight() / (mGameRows * 2); // this makes the bullet center of row
 	// create a unit with bullet image starting at x = player width, y = currRowCoord + halfRowHeight
 	Nugget::Unit newBullet{ mBulletImage, mPlayerAvatar.GetWidth(), currRowCoord + halfRowHeight};
 	mBulletUnits.emplace_back(std::move(newBullet));
+
+	mLastFireFrame = mFrameCount;
 }
 
 int MyGame::GetRowYCoord(int row) {

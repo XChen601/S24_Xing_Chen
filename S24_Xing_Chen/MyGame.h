@@ -35,6 +35,7 @@ private:
     int mFrameCount;
     int mEnemySpawnRate;
     int mNextSpawnFrame;
+    int mLastFireFrame;
 
     std::vector<Nugget::Unit> mEnemyUnits;
     std::vector<Nugget::Unit> mBulletUnits;
