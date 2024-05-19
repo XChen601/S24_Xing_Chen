@@ -15,6 +15,7 @@ private:
     void UpdatePositions();
     void CheckCollision();
     void OnKeyPress(const Nugget::KeyPressed& e);
+    void ResetGame();
     void GenerateEnemy();
     void ShootBullet();
     int GetRowYCoord(int row);
@@ -33,6 +34,8 @@ private:
     int mCurrentRow;
     int mFrameCount;
     int mEnemySpawnRate;
+    int mNextSpawnFrame;
+    int mLastFireFrame;
 
     std::vector<Nugget::Unit> mEnemyUnits;
     std::vector<Nugget::Unit> mBulletUnits;
@@ -40,4 +43,5 @@ private:
     Score* mScore;
     int lastUpdatedScore = 0;
     bool mGameEnd;
+    
 };

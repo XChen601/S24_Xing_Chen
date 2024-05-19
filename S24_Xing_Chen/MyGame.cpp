@@ -11,11 +11,14 @@ void MyGame::Initialize()
 	mGameRows = 5;
 	mCurrentRow = 2;
 	mFrameCount = 0;
-	mEnemySpawnRate = 30;
+	mEnemySpawnRate = 35;
+	mNextSpawnFrame = 0;
 	mGameEnd = false;
+	mLastFireFrame = 0;
 
 	mScore = new Score();
 }
+
 
 void MyGame::OnUpdate() {
 	if (mGameEnd) {
@@ -25,10 +28,9 @@ void MyGame::OnUpdate() {
 	}
 	Nugget::Renderer::Draw(mBackground, 0, 0);
 	mScore->DisplayScore();
-	CheckCollision();
 	UpdatePositions();
+	CheckCollision();
 	GenerateEnemy();
-	ShootBullet();
 	UpdateSpeed();
 	mFrameCount++;
 }
@@ -44,8 +46,8 @@ void MyGame::UpdateSpeed() {
 		if (mFireRate > 5)
 			mFireRate -= 1;
 
-		if (mEnemySpawnRate > 15)
-			mEnemySpawnRate -= 2;
+		if (mEnemySpawnRate > 10)
+			mEnemySpawnRate -= 1;
 		lastUpdatedScore = currScore;
 	}
 }
@@ -90,7 +92,6 @@ void MyGame::UpdatePositions()
 			break;
 		}
 	}
-
 
 	// update bullet locations
 	for (auto& bullet : mBulletUnits) {
@@ -141,15 +142,33 @@ void MyGame::OnKeyPress(const Nugget::KeyPressed& e)
 		MovePlayerRow(false);
 	}
 	else if (e.GetKeyCode() == NUGGET_KEY_SPACE && mGameEnd) {
-		mScore->SetScore(0);
-		mGameEnd = false;
+		ResetGame();
 	}
+	else if (e.GetKeyCode() == NUGGET_KEY_SPACE && !mGameEnd) {
+		ShootBullet();
+	}
+}
+
+void MyGame::ResetGame()
+{
+	mScore->SetScore(0);
+	mGameEnd = false;
+	// reset all the speeds
+	mEnemySpeed = 4;
+	mBulletSpeed = 17;
+	mFireRate = 17;
+	mGameRows = 5;
+	mCurrentRow = 2;
+	mFrameCount = 0;
+	mEnemySpawnRate = 30;
+	mNextSpawnFrame = 0;
+	mLastFireFrame = 0;
 }
 
 void MyGame::GenerateEnemy()
 {
 	// check if time to generate row
-	if (mFrameCount % mEnemySpawnRate != 0) {
+	if (mFrameCount != mNextSpawnFrame) {
 		return;
 	}
 
@@ -161,20 +180,25 @@ void MyGame::GenerateEnemy()
 	Nugget::Unit newEnemy{ mEnemyImage, mBackground.GetWidth(), rowCoord };
 	// error without using emplace_back and std::move - 'attempting to reference a deleted function'
 	mEnemyUnits.emplace_back(std::move(newEnemy));
+
+	// makes generating enemies more random
+	int random_offset = rand() % mEnemySpawnRate - mEnemySpawnRate/2;
+	mNextSpawnFrame = mNextSpawnFrame + mEnemySpawnRate + random_offset;
 }
 
 // generate a bullet starting from player position then goes to the end
 void MyGame::ShootBullet()
 {
-	if (mFrameCount % mFireRate != 0) {
-		return;
+	if ((mFrameCount - mLastFireFrame) < mFireRate) {
+		return; // not enough frames have passed since the last shot
 	}
-
 	int currRowCoord = GetRowYCoord(mCurrentRow);
 	int halfRowHeight = mBackground.GetHeight() / (mGameRows * 2); // this makes the bullet center of row
-	// create a unit with bullet image starting at x = 80, y = currRowCoord + halfRowHeight
-	Nugget::Unit newBullet{ mBulletImage, 80, currRowCoord + halfRowHeight };
+	// create a unit with bullet image starting at x = player width, y = currRowCoord + halfRowHeight
+	Nugget::Unit newBullet{ mBulletImage, mPlayerAvatar.GetWidth(), currRowCoord + halfRowHeight};
 	mBulletUnits.emplace_back(std::move(newBullet));
+
+	mLastFireFrame = mFrameCount;
 }
 
 int MyGame::GetRowYCoord(int row) {
@@ -188,5 +212,6 @@ void MyGame::EndGame() {
 	std::cout << "Game Over";
 	mEnemyUnits.clear();
 	mBulletUnits.clear();
+
 	mGameEnd = true;
 }
