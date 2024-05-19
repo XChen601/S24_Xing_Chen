@@ -9,6 +9,8 @@ Move Up - W or ↑
 
 Move Down - S or ↓
 
+Shoot Bullet - Spacebar
+
 Restart Game - Spacebar
 
 ### Overview
