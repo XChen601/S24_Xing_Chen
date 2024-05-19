@@ -1,4 +1,4 @@
-add_executable(Game Source.cpp MyGame.h MyGame.cpp Counter.h Counter.cpp)
+add_executable(Game Source.cpp MyGame.h MyGame.cpp Score.h Score.cpp)
 
 
 include_directories("../Nugget/include")
