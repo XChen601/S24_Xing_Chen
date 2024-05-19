@@ -3,7 +3,7 @@
 	- S or Down Arrow : Moves player down 1 row, or resets to highest row at row 1
 	- Spacebar : Shoot bullet
 	- Spacebar at game end : Restart Game
-- Goal: Shoot enemies 
+- Goal: Shoot enemies to prevent them from getting to the left side of screen
 - Enemies spawn from the right side of the screen. They are generated based on a spawn timer with a random offset. 
 - Bullets are generated from the player which goes to the end of the screen.
 - Bullet speed, enemy speed, enemy spawn rate, and bullet fire rate will increase as the score increase

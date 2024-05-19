@@ -11,7 +11,7 @@ void MyGame::Initialize()
 	mGameRows = 5;
 	mCurrentRow = 2;
 	mFrameCount = 0;
-	mEnemySpawnRate = 30;
+	mEnemySpawnRate = 35;
 	mNextSpawnFrame = 0;
 	mGameEnd = false;
 	mLastFireFrame = 0;
@@ -47,7 +47,7 @@ void MyGame::UpdateSpeed() {
 			mFireRate -= 1;
 
 		if (mEnemySpawnRate > 10)
-			mEnemySpawnRate -= 2;
+			mEnemySpawnRate -= 1;
 		lastUpdatedScore = currScore;
 	}
 }
