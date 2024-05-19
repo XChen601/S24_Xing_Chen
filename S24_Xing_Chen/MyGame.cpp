@@ -18,6 +18,7 @@ void MyGame::Initialize()
 	mScore = new Score();
 }
 
+
 void MyGame::OnUpdate() {
 	if (mGameEnd) {
 		Nugget::Renderer::Draw(mEndScreenImage, 0, 0);
@@ -45,7 +46,7 @@ void MyGame::UpdateSpeed() {
 		if (mFireRate > 5)
 			mFireRate -= 1;
 
-		if (mEnemySpawnRate > 12)
+		if (mEnemySpawnRate > 10)
 			mEnemySpawnRate -= 2;
 		lastUpdatedScore = currScore;
 	}
@@ -157,6 +158,7 @@ void MyGame::ResetGame()
 	mCurrentRow = 2;
 	mFrameCount = 0;
 	mEnemySpawnRate = 30;
+	mNextSpawnFrame = 0;
 }
 
 void MyGame::GenerateEnemy()
