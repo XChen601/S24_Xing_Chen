@@ -14,9 +14,9 @@ void MyGame::ResetGame()
 	mScore->SetScore(0);
 	mGameEnd = false;
 	// reset all the speeds
-	mEnemySpeed = 6;
+	mEnemySpeed = 7;
 	mBulletSpeed = 17;
-	mFireRate = 25;
+	mFireRate = 23;
 	mGameRows = 5;
 	mCurrentRow = 2;
 	mFrameCount = 0;
@@ -43,19 +43,14 @@ void MyGame::OnUpdate() {
 }
 
 void MyGame::UpdateSpeed() {
-	// every 5 score, shoot faster, enemy faster
+	// every 5 score, shoot faster, enemy spawn faster
 	int currScore = mScore->GetScore();
 
 	if (currScore % 5 == 0 && currScore != lastUpdatedScore) {
-		if (currScore % 10 == 0)
+		if (currScore % 15 == 0)
 			mEnemySpeed += 1;
-
-			
-		std::cout << "update speed";
 		if (mFireRate > 5)
 			mFireRate -= 2;
-		mBulletSpeed += 1;
-
 		if (mEnemySpawnRate > 10)
 			mEnemySpawnRate -= 2;
 		lastUpdatedScore = currScore;
