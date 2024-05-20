@@ -2,6 +2,7 @@
 
 #include "Nugget.h"
 #include "Score.h"
+#include "Fireball.h"
 
 class MyGame : public Nugget::NuggetApplication
 {
@@ -18,6 +19,7 @@ private:
     void ResetGame();
     void GenerateEnemy();
     void ShootBullet();
+    void ShootFireball();
     int GetRowYCoord(int row);
     void EndGame();
 
@@ -36,6 +38,7 @@ private:
     int mEnemySpawnRate;
     int mNextSpawnFrame;
     int mLastFireFrame;
+    Nugget::Fireball mFireball{ "../Assets/fireball.png", 2000, 2000, 3, 10 };
 
     std::vector<Nugget::Unit> mEnemyUnits;
     std::vector<Nugget::Unit> mBulletUnits;
