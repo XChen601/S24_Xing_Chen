@@ -49,7 +49,6 @@ namespace Nugget {
         if ((currentFrame - mLastFireFrame) < mCooldown) {
             return;
         }
-        std::cout << "test";
         Nugget::Renderer::Draw(mFireImage, x - mFireImage.GetWidth(), y - mFireImage.GetHeight());
     }
 }
