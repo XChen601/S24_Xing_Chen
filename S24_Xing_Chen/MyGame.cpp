@@ -5,20 +5,27 @@ void MyGame::Initialize()
 {
 	std::srand(static_cast<unsigned int>(std::time(0))); // random seed using time
 	SetKeyPressedCallback([this](const Nugget::KeyPressed& e) { OnKeyPress(e); });
-	mEnemySpeed = 4;
+	mScore = new Score();
+	ResetGame();
+}
+
+void MyGame::ResetGame()
+{
+	mScore->SetScore(0);
+	mGameEnd = false;
+	// reset all the speeds
+	mEnemySpeed = 7;
 	mBulletSpeed = 17;
-	mFireRate = 17;
+	mFireRate = 23;
 	mGameRows = 5;
 	mCurrentRow = 2;
 	mFrameCount = 0;
-	mEnemySpawnRate = 35;
+	mEnemySpawnRate = 30;
 	mNextSpawnFrame = 0;
-	mGameEnd = false;
 	mLastFireFrame = 0;
-
-	mScore = new Score();
+	mFireball.SetLastFireFrame(-999);
+	mFireball.SetCoords(9999, 9999);
 }
-
 
 void MyGame::OnUpdate() {
 	if (mGameEnd) {
@@ -27,6 +34,7 @@ void MyGame::OnUpdate() {
 		return;
 	}
 	Nugget::Renderer::Draw(mBackground, 0, 0);
+	mFireball.DisplayFire(mBackground.GetWidth(), mBackground.GetHeight(), mFrameCount);
 	mScore->DisplayScore();
 	UpdatePositions();
 	CheckCollision();
@@ -36,18 +44,16 @@ void MyGame::OnUpdate() {
 }
 
 void MyGame::UpdateSpeed() {
-	// every 5 score, shoot faster, enemy faster
+	// every 5 score, shoot faster, enemy spawn faster
 	int currScore = mScore->GetScore();
 
 	if (currScore % 5 == 0 && currScore != lastUpdatedScore) {
-		std::cout << "update speed";
-		mEnemySpeed += 1;
-		mBulletSpeed += 1;
+		if (currScore % 15 == 0)
+			mEnemySpeed += 1;
 		if (mFireRate > 5)
-			mFireRate -= 1;
-
+			mFireRate -= 2;
 		if (mEnemySpawnRate > 10)
-			mEnemySpawnRate -= 1;
+			mEnemySpawnRate -= 2;
 		lastUpdatedScore = currScore;
 	}
 }
@@ -83,8 +89,8 @@ void MyGame::UpdatePositions()
 
 	// update enemies locations
 	for (auto& enemy : mEnemyUnits) {
-		Nugget::Image mEnemyAvatar{ mEnemyImage };
-		Nugget::Renderer::Draw(mEnemyAvatar, enemy.GetXCoord(), enemy.GetYCoord());
+		Nugget::Image enemyAvatar{ mEnemyImage };
+		Nugget::Renderer::Draw(enemyAvatar, enemy.GetXCoord(), enemy.GetYCoord());
 		// move enemy left 
 		enemy.UpdateXCoord(-mEnemySpeed);
 		if (enemy.GetXCoord() < 0) {
@@ -104,9 +110,18 @@ void MyGame::UpdatePositions()
 	// remove bullets when they reach end of background x coord
 	mBulletUnits.erase(std::remove_if(mBulletUnits.begin(), mBulletUnits.end(),
 		[&](const auto& bullet) { return bullet.GetXCoord() >= mBackground.GetWidth(); }), mBulletUnits.end());
+
+	
+	// update fireball location
+	mFireball.UpdateXCoord(mFireball.GetSpeed());
+	Nugget::Image fireBallAvatar{ "../Assets/fireball.png" };
+	Nugget::Renderer::Draw(fireBallAvatar, mFireball.GetXCoord(), mFireball.GetYCoord());
+
+
 }
 
 void MyGame::CheckCollision() {
+	// check bullet collisions
 	for (auto enemyIt = mEnemyUnits.begin(); enemyIt != mEnemyUnits.end();) {
 		bool overlapFound = false;
 
@@ -130,6 +145,25 @@ void MyGame::CheckCollision() {
 			++enemyIt;
 		}
 	}
+
+	// check fireball collisions
+	for (auto enemyIt = mEnemyUnits.begin(); enemyIt != mEnemyUnits.end();) {
+		bool overlapFound = false;
+		if (Nugget::UnitsOverlap(mFireball, *enemyIt)) {
+			enemyIt = mEnemyUnits.erase(enemyIt);
+			mFireball.SetPower(mFireball.GetPower() - 1);
+			if (mFireball.GetPower() <= 0) {
+				mFireball.SetCoords(9999, 9999);
+			}
+			overlapFound = true;
+			mScore->IncrementScore();
+			break;
+		}
+		if (!overlapFound) {
+			++enemyIt;
+		}
+	}
+
 }
 
 void MyGame::OnKeyPress(const Nugget::KeyPressed& e)
@@ -147,22 +181,9 @@ void MyGame::OnKeyPress(const Nugget::KeyPressed& e)
 	else if (e.GetKeyCode() == NUGGET_KEY_SPACE && !mGameEnd) {
 		ShootBullet();
 	}
-}
-
-void MyGame::ResetGame()
-{
-	mScore->SetScore(0);
-	mGameEnd = false;
-	// reset all the speeds
-	mEnemySpeed = 4;
-	mBulletSpeed = 17;
-	mFireRate = 17;
-	mGameRows = 5;
-	mCurrentRow = 2;
-	mFrameCount = 0;
-	mEnemySpawnRate = 30;
-	mNextSpawnFrame = 0;
-	mLastFireFrame = 0;
+	else if (e.GetKeyCode() == NUGGET_KEY_D || e.GetKeyCode() == NUGGET_KEY_RIGHT) {
+		ShootFireball();
+	}
 }
 
 void MyGame::GenerateEnemy()
@@ -199,6 +220,18 @@ void MyGame::ShootBullet()
 	mBulletUnits.emplace_back(std::move(newBullet));
 
 	mLastFireFrame = mFrameCount;
+}
+
+void MyGame::ShootFireball()
+{
+	// if it hasnt been 60 frames yet, cant fire
+	if ((mFrameCount - mFireball.GetLastFireFrame()) < mFireball.GetCooldown()) {
+		return;
+	}
+	mFireball.SetPower(4);
+	int currRowCoord = GetRowYCoord(mCurrentRow);
+	mFireball.SetCoords(mPlayerAvatar.GetWidth(), currRowCoord + 5);
+	mFireball.SetLastFireFrame(mFrameCount);
 }
 
 int MyGame::GetRowYCoord(int row) {
