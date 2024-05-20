@@ -1,13 +1,13 @@
 #include "Fireball.h"
 
 namespace Nugget {
-	Fireball::Fireball(const std::string& image, int x, int y, int power, int speed)
-		: Unit(image, x, y), mPower(power), mSpeed(speed)
+	Fireball::Fireball(const std::string& image, int x, int y, int power, int speed, int cooldown)
+		: Unit(image, x, y), mPower(power), mSpeed(speed), mCooldown(cooldown)
 	{
 	}
 
-	Fireball::Fireball(std::string&& image, int x, int y, int power, int speed)
-		: Unit(std::move(image), x, y), mPower(power), mSpeed(speed)
+	Fireball::Fireball(std::string&& image, int x, int y, int power, int speed, int cooldown)
+		: Unit(std::move(image), x, y), mPower(power), mSpeed(speed), mCooldown(cooldown)
 	{
 	}
 
@@ -19,6 +19,11 @@ namespace Nugget {
     int Fireball::GetSpeed() const
     {
         return mSpeed;
+    }
+
+    int Fireball::GetCooldown() const
+    {
+        return mCooldown;
     }
 
     int Fireball::GetLastFireFrame() const
@@ -38,6 +43,14 @@ namespace Nugget {
     void Fireball::SetLastFireFrame(int frame)
     {
         mLastFireFrame = frame;
+    }
+    void Fireball::DisplayFire(int x, int y, int currentFrame)
+    {   
+        if ((currentFrame - mLastFireFrame) < mCooldown) {
+            return;
+        }
+        std::cout << "test";
+        Nugget::Renderer::Draw(mFireImage, x - mFireImage.GetWidth(), y - mFireImage.GetHeight());
     }
 }
 

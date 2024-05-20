@@ -8,20 +8,24 @@ namespace Nugget
     {
     public:
         // Constructors
-        Fireball(const std::string& image, int x, int y, int power, int speed);
-        Fireball(std::string&& image, int x, int y, int power, int speed);
+        Fireball(const std::string& image, int x, int y, int power, int speed, int cooldown);
+        Fireball(std::string&& image, int x, int y, int power, int speed, int cooldown);
 
         int GetPower() const;
         int GetSpeed() const;
+        int GetCooldown() const;
         int GetLastFireFrame() const;
 
         void SetPower(int power);
         void SetSpeed(int speed);
         void SetLastFireFrame(int frame);
+        void DisplayFire(int x, int y, int currentFrame);
 
     private:
         int mPower;
         int mSpeed;
         int mLastFireFrame;
+        int mCooldown;
+        Nugget::Image mFireImage{ "../Assets/fire.png" };
     };
 }

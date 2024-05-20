@@ -34,6 +34,7 @@ void MyGame::OnUpdate() {
 		return;
 	}
 	Nugget::Renderer::Draw(mBackground, 0, 0);
+	mFireball.DisplayFire(mBackground.GetWidth(), mBackground.GetHeight(), mFrameCount);
 	mScore->DisplayScore();
 	UpdatePositions();
 	CheckCollision();
@@ -115,6 +116,7 @@ void MyGame::UpdatePositions()
 	mFireball.UpdateXCoord(mFireball.GetSpeed());
 	Nugget::Image fireBallAvatar{ "../Assets/fireball.png" };
 	Nugget::Renderer::Draw(fireBallAvatar, mFireball.GetXCoord(), mFireball.GetYCoord());
+
 
 }
 
@@ -223,7 +225,7 @@ void MyGame::ShootBullet()
 void MyGame::ShootFireball()
 {
 	// if it hasnt been 60 frames yet, cant fire
-	if ((mFrameCount - mFireball.GetLastFireFrame()) < 120) {
+	if ((mFrameCount - mFireball.GetLastFireFrame()) < mFireball.GetCooldown()) {
 		return;
 	}
 	mFireball.SetPower(4);
