@@ -11,6 +11,8 @@ Move Down - S or ↓
 
 Shoot Bullet - Spacebar
 
+Shoot Fireball - D or →
+
 Restart Game - Spacebar
 
 ### Overview
