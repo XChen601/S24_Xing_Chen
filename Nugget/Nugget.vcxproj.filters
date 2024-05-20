@@ -92,6 +92,9 @@
     <ClCompile Include="src\Image.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\codeOpenGL\ShaderOpenGL.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
