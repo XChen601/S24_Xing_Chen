@@ -3,6 +3,7 @@
 #include "Nugget.h"
 #include "Score.h"
 #include "Fireball.h"
+#include "Enemy.h"
 
 class MyGame : public Nugget::NuggetApplication
 {
@@ -40,7 +41,7 @@ private:
     int mLastFireFrame;
     Nugget::Fireball mFireball{ "../Assets/fireball.png", 2000, 2000, 3, 10, 160 };
 
-    std::vector<Nugget::Unit> mEnemyUnits;
+    std::vector<Nugget::Enemy> mEnemyUnits;
     std::vector<Nugget::Unit> mBulletUnits;
 
     Score* mScore;
