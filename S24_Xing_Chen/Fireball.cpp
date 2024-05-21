@@ -4,11 +4,13 @@ namespace Nugget {
 	Fireball::Fireball(const std::string& image, int x, int y, int power, int speed, int cooldown)
 		: Unit(image, x, y), mPower(power), mSpeed(speed), mCooldown(cooldown)
 	{
+        mLastFireFrame = -cooldown;
 	}
 
 	Fireball::Fireball(std::string&& image, int x, int y, int power, int speed, int cooldown)
 		: Unit(std::move(image), x, y), mPower(power), mSpeed(speed), mCooldown(cooldown)
 	{
+        mLastFireFrame = -cooldown;
 	}
 
     Fireball::~Fireball()

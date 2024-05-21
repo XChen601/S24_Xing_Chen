@@ -44,7 +44,7 @@ private:
     std::vector<Nugget::Unit> mBulletUnits;
 
     Score* mScore;
-    int lastUpdatedScore = 0;
+    int mLastUpdatedScore = 0;
     bool mGameEnd;
     
 };
