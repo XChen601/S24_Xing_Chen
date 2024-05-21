@@ -14,7 +14,7 @@ void MyGame::ResetGame()
 	mScore->SetScore(0);
 	mGameEnd = false;
 	// reset all the speeds
-	mEnemySpeed = 7;
+	mEnemySpeed = 6;
 	mBulletSpeed = 17;
 	mFireRate = 23;
 	mGameRows = 5;
@@ -92,7 +92,7 @@ void MyGame::UpdatePositions()
 		Nugget::Image enemyAvatar{ mEnemyImage };
 		Nugget::Renderer::Draw(enemyAvatar, enemy.GetXCoord(), enemy.GetYCoord());
 		// move enemy left 
-		enemy.UpdateXCoord(-mEnemySpeed);
+		enemy.UpdateXCoord(-enemy.GetSpeed());
 		if (enemy.GetXCoord() < 0) {
 			EndGame();
 			break;
@@ -198,7 +198,8 @@ void MyGame::GenerateEnemy()
 
 	int rowCoord = GetRowYCoord(randomRow);
 	// add enemy location at end of randomRow
-	Nugget::Unit newEnemy{ mEnemyImage, mBackground.GetWidth(), rowCoord };
+	int mRandomSpeed = rand() % mEnemySpeed + mEnemySpeed/2; // adds random offset 1/2 of speed
+	Nugget::Enemy newEnemy{ mEnemyImage, mBackground.GetWidth(), rowCoord, mRandomSpeed };
 	// error without using emplace_back and std::move - 'attempting to reference a deleted function'
 	mEnemyUnits.emplace_back(std::move(newEnemy));
 
