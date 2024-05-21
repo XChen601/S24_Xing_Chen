@@ -11,6 +11,10 @@ namespace Nugget {
 	{
 	}
 
+    Fireball::~Fireball()
+    {
+    }
+
     int Fireball::GetPower() const
     {
         return mPower;
