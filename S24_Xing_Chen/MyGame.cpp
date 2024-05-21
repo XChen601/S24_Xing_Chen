@@ -23,7 +23,7 @@ void MyGame::ResetGame()
 	mEnemySpawnRate = 30;
 	mNextSpawnFrame = 0;
 	mLastFireFrame = 0;
-	mFireball.SetLastFireFrame(-999);
+	mFireball.SetLastFireFrame(-mFireball.GetCooldown());
 	mFireball.SetCoords(9999, 9999);
 }
 
@@ -47,14 +47,14 @@ void MyGame::UpdateSpeed() {
 	// every 5 score, shoot faster, enemy spawn faster
 	int currScore = mScore->GetScore();
 
-	if (currScore % 5 == 0 && currScore != lastUpdatedScore) {
+	if (currScore % 5 == 0 && currScore != mLastUpdatedScore) {
 		if (currScore % 15 == 0)
 			mEnemySpeed += 1;
 		if (mFireRate > 5)
 			mFireRate -= 2;
 		if (mEnemySpawnRate > 10)
 			mEnemySpawnRate -= 2;
-		lastUpdatedScore = currScore;
+		mLastUpdatedScore = currScore;
 	}
 }
 
@@ -203,8 +203,8 @@ void MyGame::GenerateEnemy()
 	mEnemyUnits.emplace_back(std::move(newEnemy));
 
 	// makes generating enemies more random
-	int random_offset = rand() % mEnemySpawnRate - mEnemySpawnRate/2;
-	mNextSpawnFrame = mNextSpawnFrame + mEnemySpawnRate + random_offset;
+	int randomOffset = rand() % mEnemySpawnRate - mEnemySpawnRate/2;
+	mNextSpawnFrame = mNextSpawnFrame + mEnemySpawnRate + randomOffset;
 }
 
 // generate a bullet starting from player position then goes to the end
@@ -224,7 +224,7 @@ void MyGame::ShootBullet()
 
 void MyGame::ShootFireball()
 {
-	// if it hasnt been 60 frames yet, cant fire
+	// if it hasnt been cooldown amount of frames yet, cant fire
 	if ((mFrameCount - mFireball.GetLastFireFrame()) < mFireball.GetCooldown()) {
 		return;
 	}
