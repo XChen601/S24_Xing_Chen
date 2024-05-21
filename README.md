@@ -21,3 +21,7 @@ The game progressively gets harder as the score increases.
 
 ### Demo
 ![game demo](https://github.com/XChen601/S24_Xing_Chen/blob/main/game_demo.gif)
+
+For extra immersion, have this music playing in the background:
+
+https://www.youtube.com/watch?v=lr4vi_XAjQQ&ab_channel=LauraShigihara-Topic
