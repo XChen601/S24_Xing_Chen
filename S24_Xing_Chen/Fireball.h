@@ -11,6 +11,7 @@ namespace Nugget
         Fireball(const std::string& image, int x, int y, int power, int speed, int cooldown);
         Fireball(std::string&& image, int x, int y, int power, int speed, int cooldown);
 
+        ~Fireball();
         int GetPower() const;
         int GetSpeed() const;
         int GetCooldown() const;
