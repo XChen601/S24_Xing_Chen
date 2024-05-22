@@ -50,10 +50,10 @@ void MyGame::UpdateSpeed() {
 	if (currScore % 5 == 0 && currScore != mLastUpdatedScore) {
 		if (currScore % 15 == 0)
 			mEnemySpeed += 1;
-		if (mFireRate > 5)
-			mFireRate -= 2;
+		if (mFireRate > 7)
+			mFireRate -= 1;
 		if (mEnemySpawnRate > 10)
-			mEnemySpawnRate -= 2;
+			mEnemySpawnRate -= 1;
 		mLastUpdatedScore = currScore;
 	}
 }
@@ -229,7 +229,7 @@ void MyGame::ShootFireball()
 	if ((mFrameCount - mFireball.GetLastFireFrame()) < mFireball.GetCooldown()) {
 		return;
 	}
-	mFireball.SetPower(4);
+	mFireball.SetPower(3);
 	int currRowCoord = GetRowYCoord(mCurrentRow);
 	mFireball.SetCoords(mPlayerAvatar.GetWidth(), currRowCoord + 5);
 	mFireball.SetLastFireFrame(mFrameCount);

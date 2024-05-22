@@ -5,9 +5,9 @@
 	- D or Right Arrow : Shoots a fireball (longer cooldown). Indicator (flame image) on top right
 	- Spacebar at game end : Restarts the game and resets all settings to default
 - Goal: Shoot enemies to prevent them from getting to the left side of screen
-- Enemies spawn from the right side of the screen. They are generated based on a spawn timer with a random offset. 
+- Enemies spawn from the right side of the screen. They are generated based on a spawn timer with a random offset. Enemy speed also have a random offset.
 - Bullets are generated from the player which goes to the end of the screen.
-- Fireballs can collide with 4 enemies.
+- Fireballs can collide with 3 enemies.
 - Enemy speed, enemy spawn rate, and bullet fire rate will increase as the score increase
 - Score:
 	- Score increments by 1 each time a bullet or fireball and enemy collides
